@@ -3,6 +3,7 @@ import throttle from 'lodash.throttle';
 const formRef = document.querySelector('form');
 const emailFormRef = document.querySelector('[name="email"]');
 const textFormRef = document.querySelector('[name="message"]');
+let formData = {};
 
 populateTextarea();
 
@@ -10,19 +11,16 @@ function populateTextarea() {
   const savedMessages = localStorage.getItem('feedback-form-state');
 
   if (savedMessages) {
-    emailFormRef.value = JSON.parse(savedMessages).email;
-    textFormRef.value = JSON.parse(savedMessages).message;
+    formData = JSON.parse(savedMessages);
+    console.log(formData);
+    emailFormRef.value = formData.email;
+    textFormRef.value = formData.message;
   }
 }
 
 const onFormRefInput = event => {
-  const email = event.currentTarget.elements.email.value;
-  const message = event.currentTarget.elements.message.value;
-  const formElData = {
-    email,
-    message,
-  };
-  localStorage.setItem('feedback-form-state', JSON.stringify(formElData));
+  formData[event.target.name] = event.target.value;
+  localStorage.setItem('feedback-form-state', JSON.stringify(formData));
 };
 
 const onFormRefSubmit = event => {
@@ -34,15 +32,7 @@ const onFormRefSubmit = event => {
   ) {
     alert('Type something!');
   } else {
-    const email = event.currentTarget.elements.email.value;
-    const message = event.currentTarget.elements.message.value;
-
-    const formElData = {
-      email,
-      message,
-    };
-
-    console.log(formElData);
+    console.log(formData);
     formRef.reset();
     localStorage.removeItem('feedback-form-state');
   }
