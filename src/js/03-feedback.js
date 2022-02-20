@@ -12,8 +12,13 @@ function populateTextarea() {
 
   if (savedMessages) {
     formData = JSON.parse(savedMessages);
-    console.log(formData);
+    if (formData.email === undefined) {
+      formData.email = '';
+    }
     emailFormRef.value = formData.email;
+    if (formData.message === undefined) {
+      formData.message = '';
+    }
     textFormRef.value = formData.message;
   }
 }
@@ -35,6 +40,7 @@ const onFormRefSubmit = event => {
     console.log(formData);
     formRef.reset();
     localStorage.removeItem('feedback-form-state');
+    formData = {};
   }
 };
 
